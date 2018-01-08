@@ -14,9 +14,10 @@ class CoffeeScript(base.BaseCompiler):
     input_extension = "coffee"
     output_extension = "js"
 
-    def __init__(self, executable="coffee", sourcemap_enabled=False):
+    def __init__(self, executable=settings.COFFEESCRIPT_EXECUTABLE, sourcemap_enabled=False, version=1):
         self.executable = executable
         self.is_sourcemap_enabled = sourcemap_enabled
+        self.version = version
         super(CoffeeScript, self).__init__()
 
     def compile_file(self, source_path):
@@ -37,7 +38,11 @@ class CoffeeScript(base.BaseCompiler):
             raise exceptions.StaticCompilationError(errors)
 
         if self.is_sourcemap_enabled:
-            utils.fix_sourcemap(os.path.splitext(full_output_path)[0] + ".map", source_path, full_output_path)
+            if self.version == 2:
+                sourcemap_path = full_output_path + ".map"
+            else:
+                sourcemap_path = os.path.splitext(full_output_path)[0] + ".map"
+            utils.fix_sourcemap(sourcemap_path, source_path, full_output_path)
 
         return self.get_output_path(source_path)
 
