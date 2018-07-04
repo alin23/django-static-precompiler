@@ -14,7 +14,7 @@ class CoffeeScript(base.BaseCompiler):
     input_extension = "coffee"
     output_extension = "js"
 
-    def __init__(self, executable=settings.COFFEESCRIPT_EXECUTABLE, sourcemap_enabled=False, version=1):
+    def __init__(self, executable='coffee', sourcemap_enabled=False, version=1):
         self.executable = executable
         self.is_sourcemap_enabled = sourcemap_enabled
         self.version = version
